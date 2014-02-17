@@ -10,3 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 )
+
+urlpatterns += patterns((''),
+    (r'^dawn_app/', include('dawn_app.urls')),
+)
