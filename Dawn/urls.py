@@ -14,3 +14,9 @@ urlpatterns = patterns('',
 urlpatterns += patterns((''),
     (r'^dawn_app/', include('dawn_app.urls')),
 )
+
+urlpatterns += patterns((''),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': r'F:\Dawn\static'}
+    ),
+)
