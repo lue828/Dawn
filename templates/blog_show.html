@@ -17,7 +17,7 @@
         <section>
         <div class="blog-content">
             {% block article_content %}
-                {{ blog.content }}
+                {{ blog.content|safe }}
             {% endblock %} 
         </div>
     </section>
