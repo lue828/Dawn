@@ -1,17 +1,12 @@
 {% extends "blog_base.html" %}
 {% load comments %}
 
-{% block title %} blog list {% endblock %}
+{% block title %} tag: {{ tag.tag_name }} {% endblock %}
 
 {% block article %}
 <article class='content-main'>
-    {% for blog in blogs %}
-        <h4><a href="{% url 'detailblog' blog.id %}">{{ blog.caption }}</a></h4>
-        <p class="muted">
-            {% for tag in blog.tags.all %}
-                <i class="icon-tag"></i> <small>{{ tag }}</small>
-            {% endfor %}
-        </p>
+    {% for blog in blogs %}     
+        <h3><a href="{% url 'detailblog' blog.id %}">{{ blog.caption }}</a></h3>
         <p class=""muted">
             {{ blog.content|truncatechars:300|safe }}
         </p>
@@ -23,16 +18,15 @@
                 {% get_comment_count for blog as comment_count %}
                 <a href="{% url 'detailblog' blog.id %}#cmt" title="comment"><i class=" icon-comment"></i>{{ comment_count }}</a>
             </div>
-        </div>
-    <hr>
-    {% endfor %}
-</article>
+        </div>        
+        <hr class="soften">
+    {% empty %} 
+        <p class="text-info">no result!!</p>             
+    {% endfor %} 
+</article>  
 {% endblock %}
 
-{% block aside %}   
-
-    <a class="btn" href="{% url 'addblog' %}"><i class="icon-plus"></i> Add new blog</a>
-
+{% block aside %}
     {% block tags %}
         <div class="well">
             {% for tag in tags %}
