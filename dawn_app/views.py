@@ -11,15 +11,11 @@ from dawn_app.forms import BlogForm
 from dawn_app.forms import TagForm
 
 def blog_list(request):
-    blogs = Blog.objects.all()
-    return render_to_response("blog_list.html", {"blogs": blogs})
+    blogs = Blog.objects.order_by('-id')
+    tags = Tag.objects.all()
+    return render_to_response("blog_list.html",
+        {"blogs": blogs, "tags": tags}, context_instance=RequestContext(request))
 
-def blog_show(request, id=''):
-    try:
-        blog = Blog.objects.get(id=id)
-    except Blog.DoesNotExist:
-        raise Http404
-    return render_to_response("blog_show.html", {"blog": blog})
 
 def blog_filter(request, id=''):
     tags = Tag.objects.all()
@@ -28,22 +24,42 @@ def blog_filter(request, id=''):
     return render_to_response("blog_filter.html",
         {"blogs": blogs, "tag": tag, "tags": tags})
 
-def blog_add(request):
-    if request.method == "POST":
-        form = BlogForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            title = cd['caption']
-            author = Author.objects.get(id=1)
-            content = cd['content']
-            blog = Blog(caption=title, author=author, content=content)
-            blog.save()
-            id = Blog.objects.order_by('-publish_time')[0].id
-            return HttpResponseRedirect('/dawn_app/blog/%s' % id)
-        else:
-            form = BlogForm()
-        return render_to_response('blog_add.html',
-            {'form': form}, context_intance=RequestContext(request))
+
+def blog_search(request):
+    tags = Tag.objects.all()
+    if 'search' in request.GET:
+        search = request.GET['search']
+        blogs = Blog.objects.filter(caption__icontains=search)
+        return render_to_response('blog_filter.html',
+            {"blogs": blogs, "tags": tags}, context_instance=RequestContext(request))
+    else:
+        blogs = Blog.objects.order_by('-id')
+        return render_to_response("blog_list.html", {"blogs": blogs, "tags": tags},
+            context_instance=RequestContext(request))
+
+
+def blog_show(request, id=''):
+    try:
+        blog = Blog.objects.get(id=id)
+        tags = Tag.objects.all()
+    except Blog.DoesNotExist:
+        raise Http404
+    return render_to_response("blog_show.html",
+        {"blog": blog, "tags": tags},
+        context_instance=RequestContext(request))
+
+
+def blog_del(request, id=""):
+    try:
+        blog = Blog.objects.get(id=id)
+    except Exception:
+        raise Http404
+    if blog:
+        blog.delete()
+        return HttpResponseRedirect("/dawn_app/bloglist/")
+    blogs = Blog.objects.all()
+    return render_to_response("blog_list.html", {"blogs": blogs})
+
 
 def blog_add(request):
     if request.method == 'POST':
@@ -51,10 +67,10 @@ def blog_add(request):
         tag = TagForm(request.POST)
         if form.is_valid() and tag.is_valid():
             cd = form.cleaned_data
-            cdtag = form.cleaned_data
+            cdtag = tag.cleaned_data
             tagname = cdtag['tag_name']
             for taglist in tagname.split():
-                tag.objects.get_or_create(tag_name=taglist.strip())
+                Tag.objects.get_or_create(tag_name=taglist.strip())
             title = cd['caption']
             author = Author.objects.get(id=1)
             content = cd['content']
@@ -63,13 +79,14 @@ def blog_add(request):
             for taglist in tagname.split():
                 blog.tags.add(Tag.objects.get(tag_name=taglist.strip()))
                 blog.save()
-            id = Blog.objects.order_by('-publish_time')[0].id
+            id = Blog.objects.order_by('-id')[0].id
             return HttpResponseRedirect('/dawn_app/blog/%s' % id)
-        else:
-            form = BlogForm()
-            tag = TagForm(initial={'tag_name': 'notags'})
-        return render_to_response('blog_add.html',
-            {'form': form, 'tag':tag}, context_instance=RequestContext(request))
+    else:
+        form = BlogForm()
+        tag = TagForm()
+    return render_to_response('blog_add.html',
+        {'form': form, 'tag': tag}, context_instance=RequestContext(request))
+
 
 def blog_update(request, id=""):
     id = id
@@ -120,14 +137,3 @@ def blog_update(request, id=""):
     return render_to_response('blog_add.html',
         {'blog': blog, 'form': form, 'id': id, 'tag': tag},
         context_instance=RequestContext(request))
-
-def blog_del(request, id=""):
-    try:
-        blog = Blog.objects.get(id=id)
-    except Exception:
-        raise Http404
-    if blog:
-        blog.delete()
-        return HttpResponseRedirect("/dawn_app/bloglist/")
-    blogs = Blog.objects.all()
-    return render_to_response("blog_list.html", {"blogs": blogs})
