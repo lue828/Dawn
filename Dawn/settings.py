@@ -86,8 +86,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 TEMPLATE_DIRS = [ os.path.join(BASE_DIR, 'templates')]
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 SITE_ID = 1
 
-MEDIA_ROOT = 'media/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
+MEDIA_ROOT = os.path.join(os.path.dirname(__file__),'static/upload/').replace('\\','/'),
+
+
