@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.comments',
     'django.contrib.staticfiles',
+    'xadmin',
+    'crispy_forms',
     'dawn_app',
 )
 
@@ -83,6 +85,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 TEMPLATE_DIRS = [ os.path.join(BASE_DIR, 'templates')]
 SITE_ID = 1
+
+MEDIA_ROOT = 'media/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from dawn_app.models import Author, Blog, Tag
 
+
 class AuthorAdmin(admin.ModelAdmin):
     """docstring for AuthorAdmin"""
     list_display = ('name', 'email', 'website')
