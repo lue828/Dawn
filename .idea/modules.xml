@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Dawn.iml" filepath="$PROJECT_DIR$/.idea/Dawn.iml" />
-      <module fileurl="file://F:/django-xadmin-master/.idea/django-xadmin-master.iml" filepath="F:/django-xadmin-master/.idea/django-xadmin-master.iml" />
+      <module fileurl="file://F:/DevOps/.idea/DenOps.iml" filepath="F:/DevOps/.idea/DenOps.iml" />
+      <module fileurl="file://F:/auto_release/.idea/auto_release.iml" filepath="F:/auto_release/.idea/auto_release.iml" />
+      <module fileurl="file://F:/salt-develop/.idea/salt-develop.iml" filepath="F:/salt-develop/.idea/salt-develop.iml" />
+      <module fileurl="file://F:/tornado-master/.idea/tornado-master.iml" filepath="F:/tornado-master/.idea/tornado-master.iml" />
+      <module fileurl="file://F:/tornado-websockets/.idea/tornado-websockets.iml" filepath="F:/tornado-websockets/.idea/tornado-websockets.iml" />
       <module fileurl="file://F:/voilet_code/.idea/voilet_code.iml" filepath="F:/voilet_code/.idea/voilet_code.iml" />
     </modules>
   </component>
